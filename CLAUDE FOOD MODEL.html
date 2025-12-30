@@ -1,0 +1,2021 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEAL TRACKING SYSTEM</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e8edf2 0%, #f5f7fa 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+            color: white;
+            padding: 20px 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            letter-spacing: 3px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
+
+        /* Navigation */
+        .nav {
+            background: #ffffff;
+            padding: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            display: flex;
+            border-bottom: 3px solid #2c5282;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 18px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: #4a5568;
+            transition: all 0.3s;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -3px;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-btn:hover {
+            background: #f7fafc;
+            color: #2c5282;
+        }
+
+        .nav-btn.active {
+            color: #2c5282;
+            border-bottom-color: #2c5282;
+            background: #f7fafc;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 30px;
+        }
+
+        /* Panel */
+        .panel {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            border: 1px solid #e2e8f0;
+        }
+
+        .panel-header {
+            font-size: 18px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            letter-spacing: 0.5px;
+        }
+
+        /* Form Controls */
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #3182ce 0%, #2c5282 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.4);
+        }
+
+        .btn-secondary {
+            background: #718096;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4a5568;
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .btn-danger {
+            background: #f56565;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #e53e3e;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th {
+            background: #f7fafc;
+            padding: 14px 12px;
+            text-align: left;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+            border-bottom: 2px solid #e2e8f0;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
+            color: #2d3748;
+        }
+
+        .data-table tr:hover {
+            background: #f7fafc;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 24px 30px;
+            background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            letter-spacing: 1px;
+        }
+
+        .modal-body {
+            padding: 30px;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-bar input {
+            width: 100%;
+            padding: 12px 40px 12px 16px;
+            border: 2px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .search-bar input:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+
+        /* Calendar */
+        .calendar-view {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-top: 20px;
+        }
+
+        .calendar-day {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 12px;
+            min-height: 120px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .calendar-day:hover {
+            border-color: #4299e1;
+            box-shadow: 0 2px 8px rgba(66, 153, 225, 0.2);
+        }
+
+        .calendar-day-header {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #4299e1;
+            background: #ebf8ff;
+        }
+
+        .calendar-meal {
+            font-size: 11px;
+            padding: 4px 6px;
+            background: #e6fffa;
+            border-radius: 3px;
+            margin-bottom: 4px;
+            color: #234e52;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #2c5282;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #718096;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* Onboarding */
+        .onboarding {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #2c5282 0%, #1a365d 100%);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .onboarding-content {
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .onboarding h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+
+        .onboarding p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        /* Chart Canvas */
+        .chart-container {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 8px;
+        }
+
+        canvas {
+            max-width: 100%;
+        }
+
+        /* Autocomplete */
+        .autocomplete-list {
+            position: absolute;
+            background: white;
+            border: 1px solid #cbd5e0;
+            border-top: none;
+            max-height: 200px;
+            overflow-y: auto;
+            width: 100%;
+            z-index: 100;
+            border-radius: 0 0 4px 4px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .autocomplete-item {
+            padding: 10px 12px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .autocomplete-item:hover {
+            background: #ebf8ff;
+        }
+
+        /* Tags */
+        .tags-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 8px;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            min-height: 42px;
+        }
+
+        .tag {
+            background: #4299e1;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tag-remove {
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* View Toggle */
+        .view-toggle {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Keyboard Shortcuts Help */
+        .shortcuts-info {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #2d3748;
+            color: white;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        .shortcuts-info:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Onboarding Screen -->
+    <div id="onboarding" class="onboarding hidden">
+        <div class="onboarding-content">
+            <h1>MEAL TRACKING SYSTEM</h1>
+            <p>Welcome to your comprehensive meal tracking solution. This platform helps you track meals, analyze eating behaviors, monitor hydration, and plan your nutrition.</p>
+            <p>Get started by adding foods to your database or begin logging meals right away.</p>
+            <button class="btn btn-primary" onclick="app.closeOnboarding()">GET STARTED</button>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <h1>MEAL TRACKING SYSTEM</h1>
+        <p>COMPREHENSIVE NUTRITION & BEHAVIOR ANALYTICS PLATFORM</p>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button class="nav-btn active" onclick="app.showView('dashboard')">DASHBOARD</button>
+        <button class="nav-btn" onclick="app.showView('database')">DATABASE</button>
+        <button class="nav-btn" onclick="app.showView('calendar')">CALENDAR</button>
+        <button class="nav-btn" onclick="app.showView('journal')">JOURNAL</button>
+        <button class="nav-btn" onclick="app.showView('analytics')">ANALYTICS</button>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Dashboard View -->
+        <div id="view-dashboard" class="view">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total-foods">0</div>
+                    <div class="stat-label">FOODS IN DATABASE</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-total-entries">0</div>
+                    <div class="stat-label">JOURNAL ENTRIES</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-avg-calories">0</div>
+                    <div class="stat-label">AVG DAILY CALORIES</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="stat-hydration">0</div>
+                    <div class="stat-label">GLASSES TODAY</div>
+                </div>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">RECENT ACTIVITY</div>
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>DATE</th>
+                            <th>MEAL</th>
+                            <th>CALORIES</th>
+                            <th>MOOD</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-activity"></tbody>
+                </table>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">QUICK ACTIONS</div>
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="app.openJournalModal()">LOG MEAL (J)</button>
+                    <button class="btn btn-secondary" onclick="app.showView('calendar')">VIEW CALENDAR (C)</button>
+                    <button class="btn btn-secondary" onclick="app.showView('database')">MANAGE DATABASE (D)</button>
+                    <button class="btn btn-success" onclick="app.exportMenu()">EXPORT DATA</button>
+                    <button class="btn btn-success" onclick="app.generatePDF()">GENERATE PDF REPORT</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Database View -->
+        <div id="view-database" class="view hidden">
+            <div class="panel">
+                <div class="panel-header">FOOD DATABASE MANAGEMENT</div>
+                
+                <div class="search-bar">
+                    <input type="text" id="db-search" placeholder="Search foods by name, category, or tags..." oninput="app.searchDatabase()">
+                </div>
+
+                <button class="btn btn-primary" onclick="app.openFoodModal()">+ ADD NEW FOOD</button>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>NAME</th>
+                            <th>CATEGORY</th>
+                            <th>CALORIES</th>
+                            <th>PORTION</th>
+                            <th>PREP TIME</th>
+                            <th>COST</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="food-list"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Calendar View -->
+        <div id="view-calendar" class="view hidden">
+            <div class="panel">
+                <div class="panel-header">MEAL PLANNER</div>
+                
+                <div class="view-toggle">
+                    <button class="btn btn-secondary" onclick="app.changeCalendarView('day')">DAY</button>
+                    <button class="btn btn-secondary" onclick="app.changeCalendarView('week')">WEEK</button>
+                    <button class="btn btn-primary" onclick="app.changeCalendarView('month')">MONTH</button>
+                </div>
+
+                <div>
+                    <button class="btn btn-secondary" onclick="app.previousCalendarPeriod()">← PREVIOUS</button>
+                    <span id="calendar-title" style="margin: 0 20px; font-weight: 600;"></span>
+                    <button class="btn btn-secondary" onclick="app.nextCalendarPeriod()">NEXT →</button>
+                </div>
+
+                <div id="calendar-container" class="calendar-view"></div>
+            </div>
+        </div>
+
+        <!-- Journal View -->
+        <div id="view-journal" class="view hidden">
+            <div class="panel">
+                <div class="panel-header">MEAL JOURNAL</div>
+                
+                <div class="search-bar">
+                    <input type="text" id="journal-search" placeholder="Search journal entries..." oninput="app.searchJournal()">
+                </div>
+
+                <button class="btn btn-primary" onclick="app.openJournalModal()">+ LOG NEW MEAL</button>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>DATE/TIME</th>
+                            <th>FOOD</th>
+                            <th>PORTIONS</th>
+                            <th>CALORIES</th>
+                            <th>HUNGER</th>
+                            <th>MOOD</th>
+                            <th>BINGE</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="journal-list"></tbody>
+                </table>
+            </div>
+
+            <div class="panel">
+                <div class="panel-header">HYDRATION LOG</div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>GLASSES OF WATER TODAY</label>
+                        <input type="number" id="hydration-input" min="0" value="0">
+                    </div>
+                </div>
+                <button class="btn btn-primary" onclick="app.updateHydration()">UPDATE HYDRATION</button>
+            </div>
+        </div>
+
+        <!-- Analytics View -->
+        <div id="view-analytics" class="view hidden">
+            <div class="panel">
+                <div class="panel-header">ANALYTICS DASHBOARD</div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="analytics-total-calories">0</div>
+                        <div class="stat-label">TOTAL CALORIES (7 DAYS)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="analytics-binge-count">0</div>
+                        <div class="stat-label">BINGE EPISODES (7 DAYS)</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="analytics-home-meals">0%</div>
+                        <div class="stat-label">MEALS AT HOME</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="analytics-avg-satiety">0</div>
+                        <div class="stat-label">AVG SATIETY SCORE</div>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="calories-chart" width="800" height="400"></canvas>
+                </div>
+
+                <div class="chart-container">
+                    <canvas id="source-chart" width="400" height="400"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Modal -->
+    <div id="food-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="food-modal-title">ADD NEW FOOD</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="food-id">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>FOOD NAME *</label>
+                        <input type="text" id="food-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CATEGORY *</label>
+                        <select id="food-category">
+                            <option value="breakfast">Breakfast</option>
+                            <option value="lunch">Lunch</option>
+                            <option value="dinner">Dinner</option>
+                            <option value="snack">Snack</option>
+                            <option value="dessert">Dessert</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>CALORIES (DEFAULT) *</label>
+                        <input type="number" id="food-calories" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label>PORTION SIZE *</label>
+                        <input type="text" id="food-portion" placeholder="e.g., 1 cup, 100g">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>PREP TIME (MINUTES)</label>
+                        <input type="number" id="food-preptime" min="0" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label>COST ($)</label>
+                        <input type="number" id="food-cost" min="0" step="0.01" value="0">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>PURCHASE SOURCE</label>
+                        <select id="food-source">
+                            <option value="home">Home</option>
+                            <option value="grocery">Grocery</option>
+                            <option value="drive-thru">Drive Thru</option>
+                            <option value="restaurant">Restaurant</option>
+                            <option value="delivery">Delivery</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>SATIETY SCORE (1-5)</label>
+                        <select id="food-satiety">
+                            <option value="1">1 - Not Satisfying</option>
+                            <option value="2">2 - Slightly Satisfying</option>
+                            <option value="3" selected>3 - Moderately Satisfying</option>
+                            <option value="4">4 - Very Satisfying</option>
+                            <option value="5">5 - Extremely Satisfying</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>TAGS (comma separated)</label>
+                    <input type="text" id="food-tags" placeholder="healthy, quick, favorite">
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="app.saveFood()">SAVE FOOD</button>
+                    <button class="btn btn-secondary" onclick="app.closeFoodModal()">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Journal Modal -->
+    <div id="journal-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>LOG MEAL ENTRY</h2>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="journal-id">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>SELECT FOOD *</label>
+                        <select id="journal-food-id" required>
+                            <option value="">-- Select Food from Database --</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>NUMBER OF PORTIONS *</label>
+                        <input type="number" id="journal-portions" min="0.1" step="0.1" value="1" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>DATE *</label>
+                        <input type="date" id="journal-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label>TIME *</label>
+                        <input type="time" id="journal-time" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>HUNGER LEVEL (1-5) *</label>
+                        <select id="journal-hunger">
+                            <option value="1">1 - Not Hungry</option>
+                            <option value="2">2 - Slightly Hungry</option>
+                            <option value="3" selected>3 - Moderately Hungry</option>
+                            <option value="4">4 - Very Hungry</option>
+                            <option value="5">5 - Extremely Hungry</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>BINGE EPISODE?</label>
+                        <select id="journal-binge">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>MOOD BEFORE</label>
+                        <input type="text" id="journal-mood-before" placeholder="e.g., stressed, happy, neutral">
+                    </div>
+                    <div class="form-group">
+                        <label>MOOD AFTER</label>
+                        <input type="text" id="journal-mood-after" placeholder="e.g., satisfied, guilty, energized">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>EMOTIONAL TRIGGER?</label>
+                        <select id="journal-trigger">
+                            <option value="no">No</option>
+                            <option value="yes">Yes</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>EMOTIONAL TRIGGER NOTES</label>
+                    <textarea id="journal-trigger-notes" rows="3" placeholder="Describe the emotional trigger if applicable..."></textarea>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="app.saveJournalEntry()">SAVE ENTRY</button>
+                    <button class="btn btn-secondary" onclick="app.closeJournalModal()">CANCEL</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shortcuts Info -->
+    <div class="shortcuts-info">
+        <strong>SHORTCUTS:</strong> J = Journal | C = Calendar | D = Database
+    </div>
+
+    <script>
+        // Main Application Object
+        const app = {
+            version: '2.0',
+            currentView: 'dashboard',
+            calendarView: 'month',
+            calendarDate: new Date(),
+            
+            // Database module
+            db: {
+                foods: [],
+                journal: [],
+                hydration: {},
+                calendar: {}
+            },
+
+            // Initialize application
+            init() {
+                this.loadData();
+                this.checkOnboarding();
+                this.setupKeyboardShortcuts();
+                this.updateDashboard();
+                this.renderCalendar();
+                this.setDefaultDateTime();
+            },
+
+            // Load data from localStorage
+            loadData() {
+                const stored = localStorage.getItem('mealTrackerData');
+                if (stored) {
+                    const data = JSON.parse(stored);
+                    
+                    // Check version and migrate if needed
+                    if (!data.version || data.version !== this.version) {
+                        this.migrateData(data);
+                    } else {
+                        this.db = data;
+                    }
+                } else {
+                    this.db = {
+                        foods: [],
+                        journal: [],
+                        hydration: {},
+                        calendar: {},
+                        version: this.version
+                    };
+                }
+            },
+
+            // Migrate old data to new structure
+            migrateData(oldData) {
+                console.log('Migrating data to version', this.version);
+                // Ensure all required fields exist
+                this.db = {
+                    foods: oldData.foods || [],
+                    journal: oldData.journal || [],
+                    hydration: oldData.hydration || {},
+                    calendar: oldData.calendar || {},
+                    version: this.version
+                };
+                
+                // Update food items with new fields if missing
+                this.db.foods = this.db.foods.map(food => ({
+                    id: food.id || Date.now() + Math.random(),
+                    name: food.name || 'Unknown',
+                    category: food.category || 'snack',
+                    calories: food.calories || 0,
+                    portionSize: food.portionSize || food.portion || '1 serving',
+                    prepTime: food.prepTime || 0,
+                    cost: food.cost || 0,
+                    purchaseSource: food.purchaseSource || 'home',
+                    satietyScore: food.satietyScore || 3,
+                    tags: food.tags || []
+                }));
+                
+                this.saveData();
+            },
+
+            // Save data to localStorage
+            saveData() {
+                localStorage.setItem('mealTrackerData', JSON.stringify(this.db));
+            },
+
+            // Check if onboarding is needed
+            checkOnboarding() {
+                if (this.db.foods.length === 0) {
+                    document.getElementById('onboarding').classList.remove('hidden');
+                }
+            },
+
+            closeOnboarding() {
+                document.getElementById('onboarding').classList.add('hidden');
+            },
+
+            // Setup keyboard shortcuts
+            setupKeyboardShortcuts() {
+                document.addEventListener('keydown', (e) => {
+                    // Ignore if typing in input field
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') {
+                        return;
+                    }
+                    
+                    if (e.key === 'j' || e.key === 'J') {
+                        this.openJournalModal();
+                    } else if (e.key === 'c' || e.key === 'C') {
+                        this.showView('calendar');
+                    } else if (e.key === 'd' || e.key === 'D') {
+                        this.showView('database');
+                    }
+                });
+            },
+
+            // Show specific view
+            showView(viewName) {
+                this.currentView = viewName;
+                
+                // Hide all views
+                document.querySelectorAll('.view').forEach(v => v.classList.add('hidden'));
+                
+                // Show selected view
+                document.getElementById(`view-${viewName}`).classList.remove('hidden');
+                
+                // Update nav buttons
+                document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+                event.target.classList.add('active');
+                
+                // Refresh view data
+                if (viewName === 'dashboard') this.updateDashboard();
+                if (viewName === 'database') this.renderFoodList();
+                if (viewName === 'journal') this.renderJournalList();
+                if (viewName === 'calendar') this.renderCalendar();
+                if (viewName === 'analytics') this.updateAnalytics();
+            },
+
+            // FOOD DATABASE FUNCTIONS
+            openFoodModal(foodId = null) {
+                const modal = document.getElementById('food-modal');
+                
+                if (foodId) {
+                    const food = this.db.foods.find(f => f.id === foodId);
+                    if (food) {
+                        document.getElementById('food-modal-title').textContent = 'EDIT FOOD';
+                        document.getElementById('food-id').value = food.id;
+                        document.getElementById('food-name').value = food.name;
+                        document.getElementById('food-category').value = food.category;
+                        document.getElementById('food-calories').value = food.calories;
+                        document.getElementById('food-portion').value = food.portionSize;
+                        document.getElementById('food-preptime').value = food.prepTime || 0;
+                        document.getElementById('food-cost').value = food.cost || 0;
+                        document.getElementById('food-source').value = food.purchaseSource || 'home';
+                        document.getElementById('food-satiety').value = food.satietyScore || 3;
+                        document.getElementById('food-tags').value = (food.tags || []).join(', ');
+                    }
+                } else {
+                    document.getElementById('food-modal-title').textContent = 'ADD NEW FOOD';
+                    document.getElementById('food-id').value = '';
+                    document.getElementById('food-name').value = '';
+                    document.getElementById('food-category').value = 'breakfast';
+                    document.getElementById('food-calories').value = '';
+                    document.getElementById('food-portion').value = '';
+                    document.getElementById('food-preptime').value = '0';
+                    document.getElementById('food-cost').value = '0';
+                    document.getElementById('food-source').value = 'home';
+                    document.getElementById('food-satiety').value = '3';
+                    document.getElementById('food-tags').value = '';
+                }
+                
+                modal.classList.add('active');
+            },
+
+            closeFoodModal() {
+                document.getElementById('food-modal').classList.remove('active');
+            },
+
+            saveFood() {
+                const id = document.getElementById('food-id').value;
+                const name = document.getElementById('food-name').value.trim();
+                const category = document.getElementById('food-category').value;
+                const calories = parseInt(document.getElementById('food-calories').value);
+                const portionSize = document.getElementById('food-portion').value.trim();
+                const prepTime = parseInt(document.getElementById('food-preptime').value) || 0;
+                const cost = parseFloat(document.getElementById('food-cost').value) || 0;
+                const purchaseSource = document.getElementById('food-source').value;
+                const satietyScore = parseInt(document.getElementById('food-satiety').value);
+                const tagsStr = document.getElementById('food-tags').value;
+                const tags = tagsStr.split(',').map(t => t.trim()).filter(t => t);
+
+                if (!name || !calories || !portionSize) {
+                    alert('Please fill in all required fields (Name, Calories, Portion Size)');
+                    return;
+                }
+
+                const food = {
+                    id: id || Date.now(),
+                    name,
+                    category,
+                    calories,
+                    portionSize,
+                    prepTime,
+                    cost,
+                    purchaseSource,
+                    satietyScore,
+                    tags
+                };
+
+                if (id) {
+                    const index = this.db.foods.findIndex(f => f.id == id);
+                    this.db.foods[index] = food;
+                } else {
+                    this.db.foods.push(food);
+                }
+
+                this.saveData();
+                this.closeFoodModal();
+                this.renderFoodList();
+                this.updateDashboard();
+            },
+
+            deleteFood(foodId) {
+                if (!confirm('Are you sure you want to delete this food? This cannot be undone.')) {
+                    return;
+                }
+                
+                this.db.foods = this.db.foods.filter(f => f.id !== foodId);
+                this.saveData();
+                this.renderFoodList();
+                this.updateDashboard();
+            },
+
+            renderFoodList(searchTerm = '') {
+                const tbody = document.getElementById('food-list');
+                let foods = this.db.foods;
+                
+                // Filter by search term
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    foods = foods.filter(f => 
+                        f.name.toLowerCase().includes(term) ||
+                        f.category.toLowerCase().includes(term) ||
+                        (f.tags && f.tags.some(t => t.toLowerCase().includes(term)))
+                    );
+                }
+                
+                tbody.innerHTML = foods.map(food => `
+                    <tr>
+                        <td><strong>${food.name}</strong></td>
+                        <td>${food.category.toUpperCase()}</td>
+                        <td>${food.calories} cal</td>
+                        <td>${food.portionSize}</td>
+                        <td>${food.prepTime} min</td>
+                        <td>${food.cost.toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;" onclick="app.openFoodModal(${food.id})">EDIT</button>
+                            <button class="btn btn-danger" style="padding: 6px 12px;" onclick="app.deleteFood(${food.id})">DELETE</button>
+                        </td>
+                    </tr>
+                `).join('');
+            },
+
+            searchDatabase() {
+                const searchTerm = document.getElementById('db-search').value;
+                this.renderFoodList(searchTerm);
+            },
+
+            // JOURNAL FUNCTIONS
+            setDefaultDateTime() {
+                const now = new Date();
+                const date = now.toISOString().split('T')[0];
+                const time = now.toTimeString().slice(0, 5);
+                
+                const dateInput = document.getElementById('journal-date');
+                const timeInput = document.getElementById('journal-time');
+                
+                if (dateInput) dateInput.value = date;
+                if (timeInput) timeInput.value = time;
+            },
+
+            openJournalModal(entryId = null) {
+                const modal = document.getElementById('journal-modal');
+                
+                // Populate food dropdown
+                const foodSelect = document.getElementById('journal-food-id');
+                foodSelect.innerHTML = '<option value="">-- Select Food from Database --</option>' +
+                    this.db.foods.map(f => `<option value="${f.id}">${f.name} (${f.category})</option>`).join('');
+                
+                if (entryId) {
+                    const entry = this.db.journal.find(e => e.id === entryId);
+                    if (entry) {
+                        document.getElementById('journal-id').value = entry.id;
+                        document.getElementById('journal-food-id').value = entry.foodId;
+                        document.getElementById('journal-portions').value = entry.portions;
+                        document.getElementById('journal-date').value = entry.date;
+                        document.getElementById('journal-time').value = entry.time;
+                        document.getElementById('journal-hunger').value = entry.hungerLevel;
+                        document.getElementById('journal-binge').value = entry.binge;
+                        document.getElementById('journal-mood-before').value = entry.moodBefore || '';
+                        document.getElementById('journal-mood-after').value = entry.moodAfter || '';
+                        document.getElementById('journal-trigger').value = entry.emotionalTrigger;
+                        document.getElementById('journal-trigger-notes').value = entry.triggerNotes || '';
+                    }
+                } else {
+                    document.getElementById('journal-id').value = '';
+                    document.getElementById('journal-food-id').value = '';
+                    document.getElementById('journal-portions').value = '1';
+                    this.setDefaultDateTime();
+                    document.getElementById('journal-hunger').value = '3';
+                    document.getElementById('journal-binge').value = 'no';
+                    document.getElementById('journal-mood-before').value = '';
+                    document.getElementById('journal-mood-after').value = '';
+                    document.getElementById('journal-trigger').value = 'no';
+                    document.getElementById('journal-trigger-notes').value = '';
+                }
+                
+                modal.classList.add('active');
+            },
+
+            closeJournalModal() {
+                document.getElementById('journal-modal').classList.remove('active');
+            },
+
+            saveJournalEntry() {
+                const id = document.getElementById('journal-id').value;
+                const foodId = parseInt(document.getElementById('journal-food-id').value);
+                const portions = parseFloat(document.getElementById('journal-portions').value);
+                const date = document.getElementById('journal-date').value;
+                const time = document.getElementById('journal-time').value;
+                const hungerLevel = parseInt(document.getElementById('journal-hunger').value);
+                const binge = document.getElementById('journal-binge').value;
+                const moodBefore = document.getElementById('journal-mood-before').value.trim();
+                const moodAfter = document.getElementById('journal-mood-after').value.trim();
+                const emotionalTrigger = document.getElementById('journal-trigger').value;
+                const triggerNotes = document.getElementById('journal-trigger-notes').value.trim();
+
+                if (!foodId || !portions || !date || !time) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+
+                const food = this.db.foods.find(f => f.id === foodId);
+                if (!food) {
+                    alert('Selected food not found in database');
+                    return;
+                }
+
+                const totalCalories = food.calories * portions;
+
+                const entry = {
+                    id: id || Date.now(),
+                    foodId,
+                    portions,
+                    totalCalories,
+                    date,
+                    time,
+                    hungerLevel,
+                    binge,
+                    moodBefore,
+                    moodAfter,
+                    emotionalTrigger,
+                    triggerNotes
+                };
+
+                if (id) {
+                    const index = this.db.journal.findIndex(e => e.id == id);
+                    this.db.journal[index] = entry;
+                } else {
+                    this.db.journal.push(entry);
+                }
+
+                this.saveData();
+                this.closeJournalModal();
+                this.renderJournalList();
+                this.updateDashboard();
+            },
+
+            deleteJournalEntry(entryId) {
+                if (!confirm('Are you sure you want to delete this journal entry?')) {
+                    return;
+                }
+                
+                this.db.journal = this.db.journal.filter(e => e.id !== entryId);
+                this.saveData();
+                this.renderJournalList();
+                this.updateDashboard();
+            },
+
+            renderJournalList(searchTerm = '') {
+                const tbody = document.getElementById('journal-list');
+                let entries = [...this.db.journal].sort((a, b) => {
+                    const dateA = new Date(a.date + ' ' + a.time);
+                    const dateB = new Date(b.date + ' ' + b.time);
+                    return dateB - dateA;
+                });
+                
+                // Filter by search term
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    entries = entries.filter(e => {
+                        const food = this.db.foods.find(f => f.id === e.foodId);
+                        return food && food.name.toLowerCase().includes(term);
+                    });
+                }
+                
+                tbody.innerHTML = entries.map(entry => {
+                    const food = this.db.foods.find(f => f.id === entry.foodId);
+                    const foodName = food ? food.name : 'Unknown';
+                    
+                    return `
+                        <tr>
+                            <td>${entry.date}<br/><small>${entry.time}</small></td>
+                            <td><strong>${foodName}</strong></td>
+                            <td>${entry.portions}</td>
+                            <td>${entry.totalCalories} cal</td>
+                            <td>${entry.hungerLevel}/5</td>
+                            <td>${entry.moodAfter || '-'}</td>
+                            <td>${entry.binge === 'yes' ? '⚠️ YES' : 'No'}</td>
+                            <td>
+                                <button class="btn btn-secondary" style="padding: 6px 12px; margin-right: 5px;" onclick="app.openJournalModal(${entry.id})">EDIT</button>
+                                <button class="btn btn-danger" style="padding: 6px 12px;" onclick="app.deleteJournalEntry(${entry.id})">DELETE</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('');
+            },
+
+            searchJournal() {
+                const searchTerm = document.getElementById('journal-search').value;
+                this.renderJournalList(searchTerm);
+            },
+
+            // CALENDAR FUNCTIONS
+            changeCalendarView(view) {
+                this.calendarView = view;
+                this.renderCalendar();
+            },
+
+            previousCalendarPeriod() {
+                if (this.calendarView === 'day') {
+                    this.calendarDate.setDate(this.calendarDate.getDate() - 1);
+                } else if (this.calendarView === 'week') {
+                    this.calendarDate.setDate(this.calendarDate.getDate() - 7);
+                } else {
+                    this.calendarDate.setMonth(this.calendarDate.getMonth() - 1);
+                }
+                this.renderCalendar();
+            },
+
+            nextCalendarPeriod() {
+                if (this.calendarView === 'day') {
+                    this.calendarDate.setDate(this.calendarDate.getDate() + 1);
+                } else if (this.calendarView === 'week') {
+                    this.calendarDate.setDate(this.calendarDate.getDate() + 7);
+                } else {
+                    this.calendarDate.setMonth(this.calendarDate.getMonth() + 1);
+                }
+                this.renderCalendar();
+            },
+
+            renderCalendar() {
+                const container = document.getElementById('calendar-container');
+                const title = document.getElementById('calendar-title');
+                
+                if (this.calendarView === 'month') {
+                    this.renderMonthView(container, title);
+                } else if (this.calendarView === 'week') {
+                    this.renderWeekView(container, title);
+                } else {
+                    this.renderDayView(container, title);
+                }
+            },
+
+            renderMonthView(container, titleEl) {
+                const year = this.calendarDate.getFullYear();
+                const month = this.calendarDate.getMonth();
+                const firstDay = new Date(year, month, 1);
+                const lastDay = new Date(year, month + 1, 0);
+                const startDay = firstDay.getDay();
+                const daysInMonth = lastDay.getDate();
+                
+                titleEl.textContent = firstDay.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+                
+                let html = '<div class="calendar-view">';
+                
+                // Day headers
+                const dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+                dayNames.forEach(day => {
+                    html += `<div style="font-weight: 600; text-align: center; padding: 10px; background: #f7fafc;">${day}</div>`;
+                });
+                
+                // Empty cells before first day
+                for (let i = 0; i < startDay; i++) {
+                    html += '<div class="calendar-day" style="background: #f7fafc;"></div>';
+                }
+                
+                // Days
+                const today = new Date().toISOString().split('T')[0];
+                for (let day = 1; day <= daysInMonth; day++) {
+                    const date = new Date(year, month, day);
+                    const dateStr = date.toISOString().split('T')[0];
+                    const isToday = dateStr === today;
+                    
+                    // Get meals for this day
+                    const meals = this.db.journal.filter(e => e.date === dateStr);
+                    const totalCals = meals.reduce((sum, e) => sum + e.totalCalories, 0);
+                    
+                    html += `
+                        <div class="calendar-day ${isToday ? 'today' : ''}" onclick="app.viewDayDetails('${dateStr}')">
+                            <div class="calendar-day-header">${day}</div>
+                            ${meals.length > 0 ? `
+                                <div class="calendar-meal">${meals.length} meals</div>
+                                <div class="calendar-meal">${totalCals} cal</div>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+                container.innerHTML = html;
+            },
+
+            renderWeekView(container, titleEl) {
+                const startOfWeek = new Date(this.calendarDate);
+                startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+                
+                const endOfWeek = new Date(startOfWeek);
+                endOfWeek.setDate(endOfWeek.getDate() + 6);
+                
+                titleEl.textContent = `${startOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${endOfWeek.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
+                
+                let html = '<div class="calendar-view">';
+                
+                for (let i = 0; i < 7; i++) {
+                    const date = new Date(startOfWeek);
+                    date.setDate(date.getDate() + i);
+                    const dateStr = date.toISOString().split('T')[0];
+                    const isToday = dateStr === new Date().toISOString().split('T')[0];
+                    
+                    const meals = this.db.journal.filter(e => e.date === dateStr);
+                    const totalCals = meals.reduce((sum, e) => sum + e.totalCalories, 0);
+                    
+                    html += `
+                        <div class="calendar-day ${isToday ? 'today' : ''}" onclick="app.viewDayDetails('${dateStr}')">
+                            <div class="calendar-day-header">${date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' })}</div>
+                            ${meals.map(m => {
+                                const food = this.db.foods.find(f => f.id === m.foodId);
+                                return `<div class="calendar-meal">${food ? food.name : 'Unknown'}</div>`;
+                            }).join('')}
+                            ${totalCals > 0 ? `<div class="calendar-meal"><strong>${totalCals} cal</strong></div>` : ''}
+                        </div>
+                    `;
+                }
+                
+                html += '</div>';
+                container.innerHTML = html;
+            },
+
+            renderDayView(container, titleEl) {
+                const dateStr = this.calendarDate.toISOString().split('T')[0];
+                titleEl.textContent = this.calendarDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+                
+                const meals = this.db.journal.filter(e => e.date === dateStr).sort((a, b) => a.time.localeCompare(b.time));
+                const totalCals = meals.reduce((sum, e) => sum + e.totalCalories, 0);
+                
+                let html = `
+                    <div class="panel" style="margin-top: 20px;">
+                        <div class="panel-header">MEALS FOR ${dateStr}</div>
+                        <p style="margin-bottom: 20px;"><strong>Total Calories:</strong> ${totalCals}</p>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>TIME</th>
+                                    <th>FOOD</th>
+                                    <th>PORTIONS</th>
+                                    <th>CALORIES</th>
+                                    <th>HUNGER</th>
+                                    <th>MOOD</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                `;
+                
+                meals.forEach(meal => {
+                    const food = this.db.foods.find(f => f.id === meal.foodId);
+                    html += `
+                        <tr>
+                            <td>${meal.time}</td>
+                            <td><strong>${food ? food.name : 'Unknown'}</strong></td>
+                            <td>${meal.portions}</td>
+                            <td>${meal.totalCalories} cal</td>
+                            <td>${meal.hungerLevel}/5</td>
+                            <td>${meal.moodAfter || '-'}</td>
+                        </tr>
+                    `;
+                });
+                
+                if (meals.length === 0) {
+                    html += '<tr><td colspan="6" style="text-align: center; padding: 30px;">No meals logged for this day</td></tr>';
+                }
+                
+                html += `
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                container.innerHTML = html;
+            },
+
+            viewDayDetails(dateStr) {
+                this.calendarDate = new Date(dateStr);
+                this.changeCalendarView('day');
+            },
+
+            // HYDRATION
+            updateHydration() {
+                const date = new Date().toISOString().split('T')[0];
+                const glasses = parseInt(document.getElementById('hydration-input').value) || 0;
+                this.db.hydration[date] = glasses;
+                this.saveData();
+                this.updateDashboard();
+                alert('Hydration updated!');
+            },
+
+            // DASHBOARD
+            updateDashboard() {
+                // Stats
+                document.getElementById('stat-total-foods').textContent = this.db.foods.length;
+                document.getElementById('stat-total-entries').textContent = this.db.journal.length;
+                
+                // Average calories last 7 days
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                const recentEntries = this.db.journal.filter(e => new Date(e.date) >= sevenDaysAgo);
+                const totalCals = recentEntries.reduce((sum, e) => sum + e.totalCalories, 0);
+                const avgCals = recentEntries.length > 0 ? Math.round(totalCals / 7) : 0;
+                document.getElementById('stat-avg-calories').textContent = avgCals;
+                
+                // Hydration today
+                const today = new Date().toISOString().split('T')[0];
+                document.getElementById('stat-hydration').textContent = this.db.hydration[today] || 0;
+                document.getElementById('hydration-input').value = this.db.hydration[today] || 0;
+                
+                // Recent activity
+                const recent = [...this.db.journal].sort((a, b) => {
+                    const dateA = new Date(a.date + ' ' + a.time);
+                    const dateB = new Date(b.date + ' ' + b.time);
+                    return dateB - dateA;
+                }).slice(0, 5);
+                
+                const tbody = document.getElementById('recent-activity');
+                tbody.innerHTML = recent.map(entry => {
+                    const food = this.db.foods.find(f => f.id === entry.foodId);
+                    return `
+                        <tr>
+                            <td>${entry.date} ${entry.time}</td>
+                            <td>${food ? food.name : 'Unknown'}</td>
+                            <td>${entry.totalCalories} cal</td>
+                            <td>${entry.moodAfter || '-'}</td>
+                        </tr>
+                    `;
+                }).join('') || '<tr><td colspan="4" style="text-align: center;">No recent activity</td></tr>';
+            },
+
+            // ANALYTICS
+            updateAnalytics() {
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                const recentEntries = this.db.journal.filter(e => new Date(e.date) >= sevenDaysAgo);
+                
+                // Total calories
+                const totalCals = recentEntries.reduce((sum, e) => sum + e.totalCalories, 0);
+                document.getElementById('analytics-total-calories').textContent = totalCals;
+                
+                // Binge count
+                const bingeCount = recentEntries.filter(e => e.binge === 'yes').length;
+                document.getElementById('analytics-binge-count').textContent = bingeCount;
+                
+                // Home meals percentage
+                const homeMeals = recentEntries.filter(e => {
+                    const food = this.db.foods.find(f => f.id === e.foodId);
+                    return food && food.purchaseSource === 'home';
+                }).length;
+                const homePct = recentEntries.length > 0 ? Math.round((homeMeals / recentEntries.length) * 100) : 0;
+                document.getElementById('analytics-home-meals').textContent = homePct + '%';
+                
+                // Average satiety
+                const satietyScores = recentEntries.map(e => {
+                    const food = this.db.foods.find(f => f.id === e.foodId);
+                    return food ? food.satietyScore : 0;
+                });
+                const avgSatiety = satietyScores.length > 0 ? (satietyScores.reduce((a, b) => a + b, 0) / satietyScores.length).toFixed(1) : 0;
+                document.getElementById('analytics-avg-satiety').textContent = avgSatiety;
+                
+                // Draw charts
+                this.drawCaloriesChart(recentEntries);
+                this.drawSourceChart(recentEntries);
+            },
+
+            drawCaloriesChart(entries) {
+                const canvas = document.getElementById('calories-chart');
+                const ctx = canvas.getContext('2d');
+                
+                // Clear canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Group by date
+                const dailyCalories = {};
+                entries.forEach(e => {
+                    if (!dailyCalories[e.date]) dailyCalories[e.date] = 0;
+                    dailyCalories[e.date] += e.totalCalories;
+                });
+                
+                const dates = Object.keys(dailyCalories).sort();
+                const values = dates.map(d => dailyCalories[d]);
+                
+                if (dates.length === 0) {
+                    ctx.fillStyle = '#718096';
+                    ctx.font = '16px Segoe UI';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('No data available for the past 7 days', canvas.width / 2, canvas.height / 2);
+                    return;
+                }
+                
+                // Chart dimensions
+                const padding = 60;
+                const chartWidth = canvas.width - padding * 2;
+                const chartHeight = canvas.height - padding * 2;
+                const maxValue = Math.max(...values, 1);
+                const barWidth = chartWidth / dates.length * 0.7;
+                const barSpacing = chartWidth / dates.length;
+                
+                // Draw title
+                ctx.fillStyle = '#2d3748';
+                ctx.font = 'bold 18px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.fillText('DAILY CALORIE INTAKE (LAST 7 DAYS)', canvas.width / 2, 30);
+                
+                // Draw bars
+                dates.forEach((date, i) => {
+                    const value = values[i];
+                    const barHeight = (value / maxValue) * chartHeight;
+                    const x = padding + i * barSpacing + (barSpacing - barWidth) / 2;
+                    const y = canvas.height - padding - barHeight;
+                    
+                    // Bar
+                    const gradient = ctx.createLinearGradient(x, y, x, canvas.height - padding);
+                    gradient.addColorStop(0, '#4299e1');
+                    gradient.addColorStop(1, '#2c5282');
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(x, y, barWidth, barHeight);
+                    
+                    // Value on top
+                    ctx.fillStyle = '#2d3748';
+                    ctx.font = 'bold 12px Segoe UI';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(value, x + barWidth / 2, y - 5);
+                    
+                    // Date label
+                    ctx.fillStyle = '#4a5568';
+                    ctx.font = '11px Segoe UI';
+                    ctx.save();
+                    ctx.translate(x + barWidth / 2, canvas.height - padding + 15);
+                    ctx.rotate(-Math.PI / 4);
+                    ctx.fillText(new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }), 0, 0);
+                    ctx.restore();
+                });
+                
+                // Draw axes
+                ctx.strokeStyle = '#cbd5e0';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(padding, padding);
+                ctx.lineTo(padding, canvas.height - padding);
+                ctx.lineTo(canvas.width - padding, canvas.height - padding);
+                ctx.stroke();
+            },
+
+            drawSourceChart(entries) {
+                const canvas = document.getElementById('source-chart');
+                const ctx = canvas.getContext('2d');
+                
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Count by source
+                const sourceCounts = {};
+                entries.forEach(e => {
+                    const food = this.db.foods.find(f => f.id === e.foodId);
+                    if (food) {
+                        const source = food.purchaseSource || 'unknown';
+                        sourceCounts[source] = (sourceCounts[source] || 0) + 1;
+                    }
+                });
+                
+                const sources = Object.keys(sourceCounts);
+                const values = Object.values(sourceCounts);
+                const total = values.reduce((a, b) => a + b, 0);
+                
+                if (total === 0) {
+                    ctx.fillStyle = '#718096';
+                    ctx.font = '16px Segoe UI';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('No data available', canvas.width / 2, canvas.height / 2);
+                    return;
+                }
+                
+                // Draw title
+                ctx.fillStyle = '#2d3748';
+                ctx.font = 'bold 18px Segoe UI';
+                ctx.textAlign = 'center';
+                ctx.fillText('MEAL SOURCE DISTRIBUTION', canvas.width / 2, 30);
+                
+                // Colors
+                const colors = ['#4299e1', '#48bb78', '#ed8936', '#9f7aea', '#f56565'];
+                
+                // Draw pie chart
+                const centerX = canvas.width / 2;
+                const centerY = canvas.height / 2 + 20;
+                const radius = 120;
+                let currentAngle = -Math.PI / 2;
+                
+                sources.forEach((source, i) => {
+                    const sliceAngle = (values[i] / total) * Math.PI * 2;
+                    
+                    // Draw slice
+                    ctx.fillStyle = colors[i % colors.length];
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, centerY);
+                    ctx.arc(centerX, centerY, radius, currentAngle, currentAngle + sliceAngle);
+                    ctx.closePath();
+                    ctx.fill();
+                    
+                    // Draw percentage label
+                    const labelAngle = currentAngle + sliceAngle / 2;
+                    const labelX = centerX + Math.cos(labelAngle) * (radius * 0.7);
+                    const labelY = centerY + Math.sin(labelAngle) * (radius * 0.7);
+                    const percentage = Math.round((values[i] / total) * 100);
+                    
+                    ctx.fillStyle = 'white';
+                    ctx.font = 'bold 14px Segoe UI';
+                    ctx.textAlign = 'center';
+                    ctx.fillText(percentage + '%', labelX, labelY);
+                    
+                    currentAngle += sliceAngle;
+                });
+                
+                // Draw legend
+                const legendX = 50;
+                let legendY = canvas.height - 100;
+                
+                sources.forEach((source, i) => {
+                    ctx.fillStyle = colors[i % colors.length];
+                    ctx.fillRect(legendX, legendY, 20, 20);
+                    
+                    ctx.fillStyle = '#2d3748';
+                    ctx.font = '13px Segoe UI';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(source.toUpperCase() + ' (' + values[i] + ')', legendX + 30, legendY + 15);
+                    
+                    legendY += 30;
+                });
+            },
+
+            // EXPORT FUNCTIONS
+            exportMenu() {
+                const exportTypes = [
+                    { name: 'Journal Entries (CSV)', action: () => this.exportJournalCSV() },
+                    { name: 'Hydration Log (CSV)', action: () => this.exportHydrationCSV() },
+                    { name: 'Food Database (CSV)', action: () => this.exportDatabaseCSV() }
+                ];
+                
+                const choice = prompt(
+                    'Select export type:\n\n' + 
+                    exportTypes.map((t, i) => `${i + 1}. ${t.name}`).join('\n') +
+                    '\n\nEnter number (1-3):'
+                );
+                
+                const index = parseInt(choice) - 1;
+                if (index >= 0 && index < exportTypes.length) {
+                    exportTypes[index].action();
+                }
+            },
+
+            exportJournalCSV() {
+                const headers = ['Date', 'Time', 'Food Name', 'Portions', 'Total Calories', 'Hunger Level', 'Mood Before', 'Mood After', 'Binge', 'Emotional Trigger', 'Trigger Notes'];
+                
+                const rows = this.db.journal.map(entry => {
+                    const food = this.db.foods.find(f => f.id === entry.foodId);
+                    return [
+                        entry.date,
+                        entry.time,
+                        food ? food.name : 'Unknown',
+                        entry.portions,
+                        entry.totalCalories,
+                        entry.hungerLevel,
+                        entry.moodBefore || '',
+                        entry.moodAfter || '',
+                        entry.binge,
+                        entry.emotionalTrigger,
+                        entry.triggerNotes || ''
+                    ];
+                });
+                
+                this.downloadCSV('journal_entries.csv', [headers, ...rows]);
+            },
+
+            exportHydrationCSV() {
+                const headers = ['Date', 'Glasses of Water'];
+                const rows = Object.entries(this.db.hydration).map(([date, glasses]) => [date, glasses]);
+                
+                this.downloadCSV('hydration_log.csv', [headers, ...rows]);
+            },
+
+            exportDatabaseCSV() {
+                const headers = ['Name', 'Category', 'Calories', 'Portion Size', 'Prep Time (min)', 'Cost', 'Purchase Source', 'Satiety Score', 'Tags'];
+                
+                const rows = this.db.foods.map(food => [
+                    food.name,
+                    food.category,
+                    food.calories,
+                    food.portionSize,
+                    food.prepTime || 0,
+                    food.cost || 0,
+                    food.purchaseSource || 'home',
+                    food.satietyScore || 3,
+                    (food.tags || []).join('; ')
+                ]);
+                
+                this.downloadCSV('food_database.csv', [headers, ...rows]);
+            },
+
+            downloadCSV(filename, rows) {
+                const csvContent = rows.map(row => 
+                    row.map(cell => {
+                        const cellStr = String(cell);
+                        return cellStr.includes(',') || cellStr.includes('"') || cellStr.includes('\n')
+                            ? '"' + cellStr.replace(/"/g, '""') + '"'
+                            : cellStr;
+                    }).join(',')
+                ).join('\n');
+                
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                link.click();
+            },
+
+            // PDF REPORT GENERATION
+            generatePDF() {
+                // Calculate statistics
+                const sevenDaysAgo = new Date();
+                sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+                const recentEntries = this.db.journal.filter(e => new Date(e.date) >= sevenDaysAgo);
+                
+                const totalCals = recentEntries.reduce((sum, e) => sum + e.totalCalories, 0);
+                const avgCals = recentEntries.length > 0 ? Math.round(totalCals / 7) : 0;
+                const bingeCount = recentEntries.filter(e => e.binge === 'yes').length;
+                const emotionalTriggers = recentEntries.filter(e => e.emotionalTrigger === 'yes').length;
+                
+                // Create printable HTML
+                const printWindow = window.open('', '_blank');
+                printWindow.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <title>Meal Tracking Report</title>
+                        <style>
+                            body {
+                                font-family: 'Segoe UI', Arial, sans-serif;
+                                padding: 40px;
+                                color: #333;
+                            }
+                            h1 {
+                                color: #2c5282;
+                                border-bottom: 3px solid #2c5282;
+                                padding-bottom: 10px;
+                            }
+                            h2 {
+                                color: #2c5282;
+                                margin-top: 30px;
+                            }
+                            .stats-grid {
+                                display: grid;
+                                grid-template-columns: repeat(2, 1fr);
+                                gap: 20px;
+                                margin: 20px 0;
+                            }
+                            .stat-box {
+                                border: 2px solid #e2e8f0;
+                                padding: 20px;
+                                border-radius: 8px;
+                            }
+                            .stat-value {
+                                font-size: 36px;
+                                font-weight: bold;
+                                color: #2c5282;
+                            }
+                            .stat-label {
+                                font-size: 14px;
+                                color: #718096;
+                                margin-top: 5px;
+                            }
+                            table {
+                                width: 100%;
+                                border-collapse: collapse;
+                                margin: 20px 0;
+                            }
+                            th {
+                                background: #2c5282;
+                                color: white;
+                                padding: 12px;
+                                text-align: left;
+                            }
+                            td {
+                                padding: 10px;
+                                border-bottom: 1px solid #e2e8f0;
+                            }
+                            tr:nth-child(even) {
+                                background: #f7fafc;
+                            }
+                            .footer {
+                                margin-top: 40px;
+                                padding-top: 20px;
+                                border-top: 2px solid #e2e8f0;
+                                text-align: center;
+                                color: #718096;
+                                font-size: 12px;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>MEAL TRACKING SUMMARY REPORT</h1>
+                        <p><strong>Generated:</strong> ${new Date().toLocaleString()}</p>
+                        <p><strong>Reporting Period:</strong> Last 7 Days</p>
+                        
+                        <h2>KEY STATISTICS</h2>
+                        <div class="stats-grid">
+                            <div class="stat-box">
+                                <div class="stat-value">${this.db.foods.length}</div>
+                                <div class="stat-label">Foods in Database</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${recentEntries.length}</div>
+                                <div class="stat-label">Meals Logged (7 days)</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${avgCals}</div>
+                                <div class="stat-label">Average Daily Calories</div>
+                            </div>
+                            <div class="stat-box">
+                                <div class="stat-value">${bingeCount}</div>
+                                <div class="stat-label">Binge Episodes</div>
+                            </div>
+                        </div>
+                        
+                        <h2>RECENT JOURNAL ENTRIES</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Food</th>
+                                    <th>Calories</th>
+                                    <th>Mood</th>
+                                    <th>Binge</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${recentEntries.slice(0, 20).map(entry => {
+                                    const food = this.db.foods.find(f => f.id === entry.foodId);
+                                    return `
+                                        <tr>
+                                            <td>${entry.date}</td>
+                                            <td>${entry.time}</td>
+                                            <td>${food ? food.name : 'Unknown'}</td>
+                                            <td>${entry.totalCalories}</td>
+                                            <td>${entry.moodAfter || '-'}</td>
+                                            <td>${entry.binge === 'yes' ? 'YES' : 'No'}</td>
+                                        </tr>
+                                    `;
+                                }).join('')}
+                            </tbody>
+                        </table>
+                        
+                        <h2>TOP FOODS</h2>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Food Name</th>
+                                    <th>Category</th>
+                                    <th>Calories</th>
+                                    <th>Times Eaten</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${this.getTopFoods(10).map(item => `
+                                    <tr>
+                                        <td>${item.food.name}</td>
+                                        <td>${item.food.category}</td>
+                                        <td>${item.food.calories}</td>
+                                        <td>${item.count}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        
+                        <div class="footer">
+                            <p>MEAL TRACKING SYSTEM - Comprehensive Nutrition & Behavior Analytics Platform</p>
+                            <p>This report is generated for personal tracking purposes only.</p>
+                        </div>
+                    </body>
+                    </html>
+                `);
+                
+                printWindow.document.close();
+                printWindow.focus();
+                
+                // Trigger print dialog after content loads
+                setTimeout(() => {
+                    printWindow.print();
+                }, 500);
+            },
+
+            getTopFoods(limit = 10) {
+                const foodCounts = {};
+                
+                this.db.journal.forEach(entry => {
+                    const foodId = entry.foodId;
+                    foodCounts[foodId] = (foodCounts[foodId] || 0) + 1;
+                });
+                
+                const sorted = Object.entries(foodCounts)
+                    .map(([foodId, count]) => ({
+                        food: this.db.foods.find(f => f.id == foodId),
+                        count
+                    }))
+                    .filter(item => item.food)
+                    .sort((a, b) => b.count - a.count)
+                    .slice(0, limit);
+                
+                return sorted;
+            }
+        };
+
+        // Initialize app when page loads
+        window.addEventListener('DOMContentLoaded', () => {
+            app.init();
+        });
+    </script>
+</body>
+</html>
